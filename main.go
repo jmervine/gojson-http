@@ -13,6 +13,7 @@ import (
 )
 
 var (
+    Listen string
     Port int
     Template, err = template.ParseFiles("./index.html")
     defaultJson = `{ "key": "val" }`
@@ -52,6 +53,7 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func main() {
     flag.IntVar(&Port, "port", 8080, "startup port")
+    flag.StringVar(&Listen, "listen", "localhost", "listen address")
     flag.Parse()
     if err != nil {
         log.Fatal(err)
@@ -60,7 +62,7 @@ func main() {
     handler := Handler{}
 
     server := &http.Server{
-        Addr:           fmt.Sprintf(":%d", Port),
+        Addr:           fmt.Sprintf("%s:%d", Listen, Port),
         Handler:        handler,
         ReadTimeout:    10 * time.Second,
         WriteTimeout:   10 * time.Second,
