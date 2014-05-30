@@ -1,6 +1,10 @@
 package main
 
 import (
+    "os"
+    "syscall"
+    "os/signal"
+    "sync"
     "log"
     "fmt"
     "flag"
@@ -15,8 +19,9 @@ import (
 var (
     Listen string
     Port int
-    Template, err = template.ParseFiles("./index.html")
+    Template, err = template.ParseFiles("./index.html");
     defaultJson = `{ "key": "val" }`
+    mutty = sync.Mutex{}
 )
 
 type Result struct {
@@ -52,12 +57,19 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+
+    if err != nil {
+        log.Panic(err)
+    }
+
+    // reload tempalate on SIGHUP
+    sigc := make(chan os.Signal, 1)
+    signal.Notify(sigc, syscall.SIGHUP)
+    go reloadTemplate(sigc)
+
     flag.IntVar(&Port, "port", 8080, "startup port")
     flag.StringVar(&Listen, "listen", "localhost", "listen address")
     flag.Parse()
-    if err != nil {
-        log.Fatal(err)
-    }
 
     handler := Handler{}
 
@@ -72,3 +84,17 @@ func main() {
     log.Printf("Starting at %v\n", server.Addr)
     log.Fatal(server.ListenAndServe())
 }
+
+func reloadTemplate(sigc chan os.Signal) {
+    for _ = range sigc {
+        log.Print("Attempting to reload template!")
+        t, e := template.ParseFiles("./index.html");
+        if e == nil {
+            mutty.Lock()
+            Template = t
+            mutty.Unlock()
+            log.Print("Template reloaded!")
+        }
+    }
+}
+
