@@ -1,35 +1,88 @@
 <html>
     <head>
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta charset="utf-8">
+        <meta content="Golang json to struct" name="description">
+        <meta content="go, golang, json, struct" name="keywords">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="Joshua P. Mervine" name="author">
+        <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/slate/bootstrap.min.css" media="screen" rel="stylesheet">
+        <link href="//cdn.mervine.net/bootstrap/master.css" media="screen" rel="stylesheet">
         <style>
-            .main-body {
-                margin-top: 65px;
-            }
-            .form-control {
-                width: 100%;
-            }
-
-            textarea.form-control {
-                height: 300px;
-            }
+            .form-control { width: 100%; }
+            textarea.form-control { height: 300px; }
         </style>
     </head>
-    <body>
-        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <span class="navbar-brand">Turn JSON in to a useful Go Struct.</span>
-                </div>
-            </div>
+    <body style="padding-top: 10px !important">
+    <div class="container">
+      <div class="navbar navbar-default navbar-top" style="margin-bottom: 0px !important">
+        <div class="navbar-header">
+          <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Home</a>
         </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="">
+              <a href="http://mervine.net/categories">Category List</a>
+            </li>
+            <li class="">
+              <a href="http://mervine.net/projects">My Projects</a>
+            </li>
+            <li class="">
+              <a href="http://mervine.net/notes">Notes</a>
+            </li>
+            <li class="">
+              <a href="http://mervine.net/hacks">Hacks</a>
+            </li>
+            <li class="">
+              <a href="http://mervine.net/quotes">Quotes</a>
+            </li>
+            <li class="">
+              <a href="http://mervine.net/archive">Archives</a>
+            </li>
+          </ul>
+            <form action="/search" class="navbar-form navbar-right" method="GET" role="search">
+            <div class="form-group">
+              <input class="form-control" name="q" placeholder="search" type="text">
+            </div>
+          </form>
+          <ul class="nav navbar-nav navbar-right visible-xs">
+            <li>
+              <a href="http://twitter.com/merivnej">Twitter</a>
+            </li>
+            <li>
+              <a href="http://linkedin.com/in/mervinej">Linkedin</a>
+            </li>
+            <li>
+              <a href="http://github.com/jmervine">Github</a>
+            </li>
+            <li>
+              <a href="http://www.gittip.com/jmervine">Gittip</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="container">
+        <div class="page-header" style="margin-top: 0px !important;">
+          <img src="http://www.gravatar.com/avatar/ed808193b8c2c8516715816f90a005b2.jpg?s=75" style="padding:5px 15px 15px; float:left"><a href="http://mervine.net/">
+            <h1>mervine.net</h1>
+          </a><small>Lessons learned, code written, hacks, etc.</small>
+        </div>
+      </div>
+
         <div class="container main-body">
-            <h3> JSON Input: </h3>
+            <h3>Turn JSON in to a useful Go Struct.</h3>
+            <h5>Raw JSON Input:</h5>
             <form method="POST" action="" class="form-group">
                 <textarea class="form-control" name="json">{{.Json}}</textarea>
                 <br />
                 <input class="form-control btn btn-primary" type="submit" name="submit" value="generate" />
             </form>
-            <h3> Go Struct Output: </h3>
+            <h5>Go Struct Output:</h5>
             <form class="form-group">
                 <textarea class="form-control" name="struct">{{.Struct}}</textarea>
             </form>
