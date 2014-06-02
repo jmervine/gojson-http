@@ -76,13 +76,13 @@
 
         <div class="container main-body">
             <h3>Turn JSON in to a useful Go Struct.</h3>
-            <h5>Raw JSON Input:</h5>
+            <h5>Raw JSON Input (or path to json - e.g. http://mervine.net/json2struct/example.json)</h5>
             <form method="POST" action="" class="form-group">
                 <textarea class="form-control" name="json">{{.Json}}</textarea>
                 <br />
                 <input class="form-control btn btn-primary" type="submit" name="submit" value="generate" />
             </form>
-            <h5>Go Struct Output:</h5>
+            <h5>Go Struct Output</h5>
             <form class="form-group">
                 <textarea class="form-control" name="struct">{{.Struct}}</textarea>
             </form>
