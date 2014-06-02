@@ -85,8 +85,15 @@
             </form>
             <h5>Go Struct Output</h5>
             <form class="form-group">
-                <textarea class="form-control" name="struct">{{.Struct}}</textarea>
+                <textarea class="form-control" name="struct" readonly="true">{{.Struct}}</textarea>
             </form>
+        </div>
+
+        <div class="well" style="width: 95%; margin-left: auto; margin-right: auto">
+            <h3>Notes:</h3>
+            <blockquote>
+                Also supports loading from remote json via the <code>src</code> param. Example: <a href="?src=http://mervine.net/json2struct/example.json">http://mervine.net/json2struct?src=http://mervine.net/json2/struct/example.json</a>
+            </blockquote>
         </div>
         <p>
             <center>

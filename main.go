@@ -43,13 +43,18 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
     }
 
     if strings.HasSuffix(r.URL.Path, "json") {
-        fmt.Fprintln(w, `{ "example": { "from": { "path": true } } }`)
+        fmt.Fprintln(w, fmt.Sprintf(`{ "example": { "from": { "path": "%s" } } }`, r.URL.String()))
         return
     }
 
     if r.Method == "POST" {
         val := r.PostFormValue("json")
         res.Json = val
+    } else {
+        src := r.URL.Query().Get("src")
+        if src != "" {
+            res.Json = src
+        }
     }
 
     if strings.HasPrefix(res.Json, "http") {
