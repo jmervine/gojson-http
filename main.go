@@ -47,17 +47,26 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+    var src string
     if r.Method == "POST" {
         val := r.PostFormValue("json")
         res.Json = val
     } else {
-        src := r.URL.Query().Get("src")
+        src = r.URL.Query().Get("src")
         if src != "" {
             res.Json = src
         }
     }
 
     if strings.HasPrefix(res.Json, "http") {
+
+        // redirect wth to src param, if res.Json is path, but src path doesn't exist
+        if src == "" {
+            http.Redirect(w, r, "?src="+strings.TrimSpace(res.Json), 301)
+            return
+        }
+
+        // fetch res.Json
         resp, err := http.DefaultClient.Get(strings.TrimSpace(res.Json))
         if err != nil {
             logError(r, begin, err)
