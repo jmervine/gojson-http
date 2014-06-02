@@ -62,7 +62,7 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
         // redirect wth to src param, if res.Json is path, but src path doesn't exist
         if src == "" {
-            http.Redirect(w, r, "?src="+strings.TrimSpace(res.Json), 301)
+            http.Redirect(w, r, r.URL.Path+"?src="+strings.TrimSpace(res.Json), 301)
             return
         }
 
