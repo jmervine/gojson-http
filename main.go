@@ -18,11 +18,12 @@ import (
 )
 
 var (
-	Listen        string
-	Port          int
-	Template, err = template.ParseFiles("./index.html")
-	defaultJson   = `{ "example": { "from": { "json": true } } }`
-	mutty         = sync.Mutex{}
+	Listen      string
+	Port        int
+	Template    string
+	Tmpl        *template.Template
+	defaultJson = `{ "example": { "from": { "json": true } } }`
+	mutty       = sync.Mutex{}
 )
 
 type Result struct {
@@ -35,6 +36,11 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	begin := time.Now()
 
 	defer r.Body.Close()
+
+	Tmpl, err := template.ParseFiles(Template)
+	if err != nil {
+		log.Panic(err)
+	}
 
 	log.Printf("=> %v %v 200 %v %v %s\n", r.Method, r.URL, r.Proto, r.Header["User-Agent"], fmt.Sprintf("%s", time.Since(begin)))
 
@@ -71,7 +77,7 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			logError(r, begin, err)
 			res.Struct = fmt.Sprintf("JSON Parse Error: %v\n", err)
-			Template.Execute(w, nil)
+			Tmpl.Execute(w, nil)
 			return
 		}
 
@@ -90,7 +96,7 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		logError(r, begin, err)
 		res.Struct = fmt.Sprintf("JSON Parse Error: %v\n", err)
 	}
-	Template.Execute(w, res)
+	Tmpl.Execute(w, res)
 }
 
 func logError(r *http.Request, t time.Time, e error) {
@@ -100,10 +106,6 @@ func logError(r *http.Request, t time.Time, e error) {
 
 func main() {
 
-	if err != nil {
-		log.Panic(err)
-	}
-
 	// reload tempalate on SIGHUP
 	sigc := make(chan os.Signal, 1)
 	signal.Notify(sigc, syscall.SIGHUP)
@@ -111,6 +113,7 @@ func main() {
 
 	flag.IntVar(&Port, "port", 8080, "startup port")
 	flag.StringVar(&Listen, "listen", "localhost", "listen address")
+	flag.StringVar(&Template, "template", "index.html", "display template")
 	flag.Parse()
 
 	handler := Handler{}
@@ -130,10 +133,10 @@ func main() {
 func reloadTemplate(sigc chan os.Signal) {
 	for _ = range sigc {
 		log.Print("Attempting to reload template!")
-		t, e := template.ParseFiles("./index.html")
+		t, e := template.ParseFiles(Template)
 		if e == nil {
 			mutty.Lock()
-			Template = t
+			Tmpl = t
 			mutty.Unlock()
 			log.Print("Template reloaded!")
 		}

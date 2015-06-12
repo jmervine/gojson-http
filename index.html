@@ -1,14 +1,24 @@
 <html>
     <head>
         <title>Golang: Convert JSON to Struct</title>
+        <link rel='shortcut icon' type='image/x-icon' href='http://mervine.net/favicon.ico' />
+
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta charset="utf-8">
         <meta content="Golang: Convert JSON to struct" name="description">
         <meta content="go, golang, json, struct" name="keywords">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="Joshua P. Mervine" name="author">
-        <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/slate/bootstrap.min.css" media="screen" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/spacelab/bootstrap.min.css" media="screen" rel="stylesheet">
         <link href="//cdn.mervine.net/bootstrap/master.css" media="screen" rel="stylesheet">
+        <!--[if lte IE 6]>
+              <link href='http://universal-ie6-css.googlecode.com/files/ie6.1.1.css' media='screen, projection' rel='stylesheet'>
+            <![endif]--><!--[if lt IE 9]>
+              <script src='//html5shim.googlecode.com/svn/trunk/html5.js'></script>
+            <![endif]--><link href="/articles.xml" rel="alternate" type="application/atom+xml">
+        <link href="//cdn.mervine.net/bootstrap/images/apple-touch-icon.png" rel="apple-touch-icon">
+        <link href="//cdn.mervine.net/bootstrap/images/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
+        <link href="//cdn.mervine.net/bootstrap/images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
         <style>
             .form-control { width: 100%; }
             textarea.form-control { height: 300px; }
@@ -23,7 +33,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Home</a>
+          <a class="navbar-brand" href="http://mervine.net">Home</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -46,11 +56,6 @@
               <a href="http://mervine.net/archive">Archives</a>
             </li>
           </ul>
-            <form action="/search" class="navbar-form navbar-right" method="GET" role="search">
-            <div class="form-group">
-              <input class="form-control" name="q" placeholder="search" type="text">
-            </div>
-          </form>
           <ul class="nav navbar-nav navbar-right visible-xs">
             <li>
               <a href="http://twitter.com/merivnej">Twitter</a>
@@ -77,7 +82,7 @@
 
         <div class="container main-body">
             <h3>Golang: Convert JSON in to a useful struct.</h3>
-            <h5>Raw JSON Input (or path to json - e.g. http://mervine.net/json2struct/example.json)</h5>
+            <h5>Raw JSON Input</h5>
             <form method="POST" action="" class="form-group">
                 <textarea class="form-control" name="json">{{.Json}}</textarea>
                 <br />
