@@ -14,7 +14,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/ChimeraCoder/gojson"
+	"github.com/jmervine/gojson-http/Godeps/_workspace/src/github.com/ChimeraCoder/gojson"
 )
 
 var (

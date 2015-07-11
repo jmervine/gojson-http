@@ -1,0 +1,13 @@
+{
+	"ImportPath": "github.com/jmervine/gojson-http",
+	"GoVersion": "go1.3.3",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/ChimeraCoder/gojson",
+			"Rev": "776aa5ef800f67622afd3d1c252fcbedb190085d"
+		}
+	]
+}
