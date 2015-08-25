@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"html/template"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"os/signal"
@@ -15,6 +14,7 @@ import (
 	"time"
 
 	"github.com/jmervine/gojson-http/Godeps/_workspace/src/github.com/ChimeraCoder/gojson"
+	"github.com/jmervine/gojson-http/Godeps/_workspace/src/gopkg.in/jmervine/readable.v1"
 )
 
 var (
@@ -25,6 +25,10 @@ var (
 	defaultJson = `{ "example": { "from": { "json": true } } }`
 	mutty       = sync.Mutex{}
 )
+var log = readable.New().
+	WithPrefix("http-gojson").
+	WithOutput(os.Stdout).
+	WithFlags(0)
 
 type Result struct {
 	Json, Struct string
@@ -39,10 +43,10 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	Tmpl, err := template.ParseFiles(Template)
 	if err != nil {
-		log.Panic(err)
+		log.Panic("at", "ServerHTTP", "error", err)
 	}
 
-	log.Printf("=> %v %v 200 %v %v %s\n", r.Method, r.URL, r.Proto, r.Header["User-Agent"], fmt.Sprintf("%s", time.Since(begin)))
+	log.Log("at", "ServeHTTP", "method", r.Method, "path", r.URL.Path, "user-agent", r.Header["User-Agent"], "took", time.Since(begin))
 
 	res := Result{
 		Json: defaultJson,
@@ -100,8 +104,8 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func logError(r *http.Request, t time.Time, e error) {
-	log.Printf("=> %v %v 500 %v %v %s\n", r.Method, r.URL, r.Proto, r.Header["User-Agent"], fmt.Sprintf("%s", time.Since(t)))
-	log.Printf("ERROR:\n%v\n\n", e)
+	log.Log("at", "logError", "method", r.Method, "path", r.URL.Path, "user-agent", r.Header["User-Agent"], "took", time.Since(t))
+	log.Log("at", "logError", "error", e)
 }
 
 func main() {
@@ -126,19 +130,20 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 
-	log.Printf("Starting at %v\n", server.Addr)
-	log.Fatal(server.ListenAndServe())
+	log.Log("at", "main", "address", server.Addr)
+	log.Fatal("at", "main", "error", server.ListenAndServe())
 }
 
 func reloadTemplate(sigc chan os.Signal) {
 	for _ = range sigc {
-		log.Print("Attempting to reload template!")
+		log.Log("at", "reloadTemplate", "message", "reloading template")
 		t, e := template.ParseFiles(Template)
-		if e == nil {
-			mutty.Lock()
-			Tmpl = t
-			mutty.Unlock()
-			log.Print("Template reloaded!")
+		if e != nil {
+			log.Log("at", "reloadTemplate", "error", e)
 		}
+		mutty.Lock()
+		Tmpl = t
+		mutty.Unlock()
+		log.Log("at", "reloadTemplate", "message", "template reloaded")
 	}
 }
