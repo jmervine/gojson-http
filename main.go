@@ -12,9 +12,9 @@ import (
 	"sync"
 	"syscall"
 	"time"
+    "log"
 
 	"github.com/ChimeraCoder/gojson"
-	"gopkg.in/jmervine/readable.v1"
 )
 
 var (
@@ -25,16 +25,17 @@ var (
 	defaultJson = `{ "example": { "from": { "json": true } } }`
 	mutty       = sync.Mutex{}
 )
-var log = readable.New().
-	WithPrefix("http-gojson").
-	WithOutput(os.Stdout).
-	WithFlags(0)
 
 type Result struct {
 	Json, Struct string
 }
 
 type Handler struct{}
+
+func init() {
+    log.SetFlags(0)
+    log.SetPrefix("app=gojson-http")
+}
 
 func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	begin := time.Now()
@@ -43,10 +44,11 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	Tmpl, err := template.ParseFiles(Template)
 	if err != nil {
-		log.Panic("at", "ServerHTTP", "error", err)
+        log.Fatalf("at=ServeHTTP error=%v", err)
 	}
 
-	log.Log("at", "ServeHTTP", "method", r.Method, "path", r.URL.Path, "user-agent", r.Header["User-Agent"], "took", time.Since(begin))
+    log.Printf("at=ServeHTTP method=%s path=%s user-agent=%s took=%v",
+        r.Method, r.URL.Path, r.Header["User-Agent"], time.Since(begin))
 
 	res := Result{
 		Json: defaultJson,
@@ -79,7 +81,9 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// fetch res.Json
 		resp, err := http.DefaultClient.Get(strings.TrimSpace(res.Json))
 		if err != nil {
-			logError(r, begin, err)
+            log.Printf("at=ServeHTTP method=%s path=%s user-agent=%s took=%v",
+                r.Method, r.URL.Path, r.Header["User-Agent"], time.Since(begin))
+            log.Printf("at=ServeHTTP error=%v", err)
 			res.Struct = fmt.Sprintf("JSON Parse Error: %v\n", err)
 			Tmpl.Execute(w, nil)
 			return
@@ -88,7 +92,9 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		read, err := ioutil.ReadAll(resp.Body)
 		resp.Body.Close()
 		if err != nil {
-			logError(r, begin, err)
+            log.Printf("at=ServeHTTP method=%s path=%s user-agent=%s took=%v",
+                r.Method, r.URL.Path, r.Header["User-Agent"], time.Since(begin))
+            log.Printf("at=ServeHTTP error=%v", err)
 			res.Struct = fmt.Sprintf("JSON Fetch Error: %v\n", err)
 		}
 		res.Json = string(read)
@@ -97,19 +103,15 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if out, e := gojson.Generate(strings.NewReader(res.Json), gojson.ParseJson, "MyJsonName", "main", []string{"json"}, false, true); e == nil {
 		res.Struct = string(out)
 	} else {
-		logError(r, begin, err)
-		res.Struct = fmt.Sprintf("JSON Parse Error: %v\n", err)
+        log.Printf("at=ServeHTTP method=%s path=%s user-agent=%s took=%v",
+            r.Method, r.URL.Path, r.Header["User-Agent"], time.Since(begin))
+        log.Printf("at=ServeHTTP error=%v", e)
+		res.Struct = fmt.Sprintf("JSON Parse Error: %v\n", e)
 	}
 	Tmpl.Execute(w, res)
 }
 
-func logError(r *http.Request, t time.Time, e error) {
-	log.Log("at", "logError", "method", r.Method, "path", r.URL.Path, "user-agent", r.Header["User-Agent"], "took", time.Since(t))
-	log.Log("at", "logError", "error", e)
-}
-
 func main() {
-
 	// reload tempalate on SIGHUP
 	sigc := make(chan os.Signal, 1)
 	signal.Notify(sigc, syscall.SIGHUP)
@@ -130,20 +132,20 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 
-	log.Log("at", "main", "address", server.Addr)
-	log.Fatal("at", "main", "error", server.ListenAndServe())
+    log.Printf("at=main address=%s", server.Addr)
+    log.Fatalf("at=main error=%s", server.ListenAndServe())
 }
 
 func reloadTemplate(sigc chan os.Signal) {
 	for _ = range sigc {
-		log.Log("at", "reloadTemplate", "message", "reloading template")
+        log.Print("at=reloadTemplate message=\"reloading template\"")
 		t, e := template.ParseFiles(Template)
 		if e != nil {
-			log.Log("at", "reloadTemplate", "error", e)
+            log.Printf("at=reloadTemplate error=%v", e)
 		}
 		mutty.Lock()
 		Tmpl = t
 		mutty.Unlock()
-		log.Log("at", "reloadTemplate", "message", "template reloaded")
+        log.Println("at=reloadTemplate message=\"reloading template\"")
 	}
 }

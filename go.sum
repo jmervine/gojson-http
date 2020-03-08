@@ -1,10 +1,6 @@
 github.com/ChimeraCoder/gojson v1.1.0 h1:/6S8djl/jColpJGTYniA3xrqJWuKeyEozzPtpr5L4Pw=
 github.com/ChimeraCoder/gojson v1.1.0/go.mod h1:nYbTQlu6hv8PETM15J927yM0zGj3njIldp72UT1MqSw=
-github.com/jmervine/GoT v0.0.0-20180102173655-c50aad9e7f0d h1:U074tDsy/g5fx3qDkC55oVhkGIDSs1Jh+yZQlbz7Dmg=
-github.com/jmervine/GoT v0.0.0-20180102173655-c50aad9e7f0d/go.mod h1:lyRCP6wzE+72jKizgyJORLxnvu9F0HD5TMVoZMifkOc=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
-gopkg.in/jmervine/readable.v1 v1.0.0-20150925011043-6f6c7afbdd1b h1:fSffFYatm5I2KQKbkIDcPQBtA7WVeXkgSW5seYw2hgE=
-gopkg.in/jmervine/readable.v1 v1.0.0-20150925011043-6f6c7afbdd1b/go.mod h1:sKYoaiS+1u8o2TdoTo3+tLLrcsH2b6F89N4Vzmxpvj8=
 gopkg.in/yaml.v2 v2.2.8 h1:obN1ZagJSUGI0Ek/LBmuj4SNLPfIny3KsKFopxRdj10=
 gopkg.in/yaml.v2 v2.2.8/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
