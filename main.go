@@ -13,8 +13,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jmervine/gojson-http/Godeps/_workspace/src/github.com/ChimeraCoder/gojson"
-	"github.com/jmervine/gojson-http/Godeps/_workspace/src/gopkg.in/jmervine/readable.v1"
+	"github.com/ChimeraCoder/gojson"
+	"gopkg.in/jmervine/readable.v1"
 )
 
 var (
