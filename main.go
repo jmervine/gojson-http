@@ -94,7 +94,7 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		res.Json = string(read)
 	}
 
-	if out, e := json2struct.Generate(strings.NewReader(res.Json), "MyJsonName", "main"); e == nil {
+	if out, e := gojson.Generate(strings.NewReader(res.Json), gojson.ParseJson, "MyJsonName", "main", []string{"json"}, false, true); e == nil {
 		res.Struct = string(out)
 	} else {
 		logError(r, begin, err)
