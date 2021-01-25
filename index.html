@@ -1,42 +1,51 @@
 <html>
-    <head>
-        <title>Golang: Convert JSON to Struct</title>
-        <link rel='shortcut icon' type='image/x-icon' href='http://mervine.net/favicon.ico' />
 
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta charset="utf-8">
-        <meta content="Golang: Convert JSON to struct" name="description">
-        <meta content="go, golang, json, struct" name="keywords">
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="Joshua P. Mervine" name="author">
-        <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/spacelab/bootstrap.min.css" media="screen" rel="stylesheet">
-        <link href="//www.mervine.net/bootstrap/master.css" media="screen" rel="stylesheet">
-        <!--[if lte IE 6]>
+<head>
+  <title>Golang: Convert JSON to Struct</title>
+  <link rel='shortcut icon' type='image/x-icon' href='http://mervine.net/favicon.ico' />
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta content="Golang: Convert JSON to struct" name="description">
+  <meta content="go, golang, json, struct" name="keywords">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="Joshua P. Mervine" name="author">
+  <link href="//netdna.bootstrapcdn.com/bootswatch/3.0.0/spacelab/bootstrap.min.css" media="screen" rel="stylesheet">
+  <link href="//www.mervine.net/bootstrap/master.css" media="screen" rel="stylesheet">
+  <!--[if lte IE 6]>
               <link href='http://universal-ie6-css.googlecode.com/files/ie6.1.1.css' media='screen, projection' rel='stylesheet'>
-            <![endif]--><!--[if lt IE 9]>
+            <![endif]-->
+  <!--[if lt IE 9]>
               <script src='//html5shim.googlecode.com/svn/trunk/html5.js'></script>
-            <![endif]--><link href="/articles.xml" rel="alternate" type="application/atom+xml">
-        <link href="//www.mervine.net/bootstrap/images/apple-touch-icon.png" rel="apple-touch-icon">
-        <link href="//www.mervine.net/bootstrap/images/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
-        <link href="//www.mervine.net/bootstrap/images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
-        <style>
-            .form-control { width: 100%; }
-            textarea.form-control { height: 300px; }
-        </style>
-    </head>
-    <body style="padding-top: 10px !important">
-    <div class="container">
-      <div class="navbar navbar-default navbar-top" style="margin-bottom: 0px !important">
-        <div class="navbar-header">
-          <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">Json2Struct</a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <!--ul class="nav navbar-nav">
+            <![endif]-->
+  <link href="/articles.xml" rel="alternate" type="application/atom+xml">
+  <link href="//www.mervine.net/bootstrap/images/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="//www.mervine.net/bootstrap/images/apple-touch-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
+  <link href="//www.mervine.net/bootstrap/images/apple-touch-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
+  <style>
+    .form-control {
+      width: 100%;
+    }
+
+    textarea.form-control {
+      height: 300px;
+    }
+  </style>
+</head>
+
+<body style="padding-top: 10px !important">
+  <div class="container">
+    <div class="navbar navbar-default navbar-top" style="margin-bottom: 0px !important">
+      <div class="navbar-header">
+        <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse" type="button">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">Json2Struct</a>
+      </div>
+      <div class="navbar-collapse collapse">
+        <!--ul class="nav navbar-nav">
             <li class="">
               <a href="http://mervine.net/categories">Category List</a>
             </li>
@@ -56,66 +65,70 @@
               <a href="http://mervine.net/archive">Archives</a>
             </li>
           </ul-->
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <a href="http://github.com/jmervine">Github</a>
-            </li>
-            <li>
-              <a href="http://linkedin.com/in/mervinej">Linkedin</a>
-            </li>
-            <li>
-              <a href="http://twitter.com/merivnej">Twitter</a>
-            </li>
-            <li>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="http://github.com/jmervine">Github</a>
+          </li>
+          <li>
+            <a href="http://linkedin.com/in/mervinej">Linkedin</a>
+          </li>
+          <li>
+            <a href="http://twitter.com/merivnej">Twitter</a>
+          </li>
+          <!--li>
               <a href="http://www.gittip.com/jmervine">Gittip</a>
-            </li>
-          </ul>
-        </div>
+            </li-->
+        </ul>
       </div>
-      <div class="container">
-        <div class="page-header" style="margin-top: 0px !important;">
-          <img src="http://www.gravatar.com/avatar/ed808193b8c2c8516715816f90a005b2.jpg?s=75" alt="joshua.mervine.net" style="padding:5px 15px 15px; float:left"><a href="http://joshua.mervine.net/">
-            <h1>mervine.net</h1>
-          </a><small>Lessons learned, code written, hacks, etc.</small>
-        </div>
+    </div>
+    <div class="container">
+      <div class="page-header" style="margin-top: 0px !important;">
+        <img src="http://www.gravatar.com/avatar/ed808193b8c2c8516715816f90a005b2.jpg?s=75" alt="joshua.mervine.net"
+          style="padding:5px 15px 15px; float:left"><a href="http://joshua.mervine.net/">
+          <h1>mervine.net</h1>
+        </a><small>Lessons learned, code written, hacks, etc.</small>
       </div>
+    </div>
 
-        <div class="container main-body">
-            <h3>Golang: Convert JSON in to a useful struct.</h3>
-            <h5>Raw JSON Input</h5>
-            <form method="POST" action="" class="form-group">
-                <textarea class="form-control" name="json">{{.Json}}</textarea>
-                <br />
-                <input class="form-control btn btn-primary" type="submit" name="submit" value="generate" />
-            </form>
-            <h5>Go Struct Output</h5>
-            <form class="form-group">
-                <textarea class="form-control" name="struct" readonly="true">{{.Struct}}</textarea>
-            </form>
-        </div>
+    <div class="container main-body">
+      <h3>Golang: Convert JSON in to a useful struct.</h3>
+      <h5>Raw JSON Input</h5>
+      <form method="POST" action="" class="form-group">
+        <textarea class="form-control" name="json">{{.Json}}</textarea>
+        <br />
+        <input class="form-control btn btn-primary" type="submit" name="submit" value="generate" />
+      </form>
+      <h5>Go Struct Output</h5>
+      <form class="form-group">
+        <textarea class="form-control" name="struct" readonly="true">{{.Struct}}</textarea>
+      </form>
+    </div>
 
-        <div class="well" style="width: 95%; margin-left: auto; margin-right: auto">
-            <h3>Notes:</h3>
-            <ol>
-                <li>Also supports loading from remote json via the <code>src</code> param. Example: <a href="?src=http://json2struct.mervine.net/example.json">http://json2struct.mervine.net?src=http://json2struct.mervine.net/example.json</a></li>
-                <li>See an example in Go Playground: <a href="http://play.golang.org/p/usdLCoVEZR">http://play.golang.org/p/usdLCoVEZR</a>.</li>
-            </ol>
-        </div>
-        <p>
-            <center>
-                Fork me @ <a href="http://github.com/jmervine/gojson-http">github.com/jmervine/gojson-http</a>
-            </center>
-        </p>
-        <script type="text/javascript">
-            var _gaq = _gaq || [];
-            _gaq.push(['_setAccount', 'UA-32343843-1']);
-            _gaq.push(['_trackPageview']);
-            (function() {
-              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-              ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-            })();
-        </script>
-    </body>
+    <div class="well" style="width: 95%; margin-left: auto; margin-right: auto">
+      <h3>Notes:</h3>
+      <ol>
+        <li>Also supports loading from remote json via the <code>src</code> param. Example: <a
+            href="?src=http://json2struct.mervine.net/example.json">http://json2struct.mervine.net?src=http://json2struct.mervine.net/example.json</a>
+        </li>
+        <li>See an example in Go Playground: <a
+            href="http://play.golang.org/p/usdLCoVEZR">http://play.golang.org/p/usdLCoVEZR</a>.</li>
+      </ol>
+    </div>
+    <p>
+      <center>
+        Fork me @ <a href="http://github.com/jmervine/gojson-http">github.com/jmervine/gojson-http</a>
+      </center>
+    </p>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-32343843-1']);
+      _gaq.push(['_trackPageview']);
+      (function () {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+</body>
+
 </html>
-
