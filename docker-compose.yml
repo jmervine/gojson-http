@@ -1,5 +1,5 @@
 web:
-  image: golang:1.5
+  image: golang:1.20
   command: go run main.go -port 3000 -listen 0.0.0.0 -template /go/src/github.com/jmervine/gojson-http/index.html
   working_dir: /go/src/github.com/jmervine/gojson-http
   volumes:
